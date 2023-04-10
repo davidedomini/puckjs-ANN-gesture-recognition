@@ -1,0 +1,67 @@
+<html>
+ <head>
+ </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="model.js"></script>
+<body>
+<canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+  <script src="https://www.espruino.com/js/uart.js"></script>
+  <script>
+  
+	function extractDataFromResponse(response){
+		if(response != null){
+			var data = response
+				.data
+				.split(",")
+				.map(e => parseFloat(e));
+			console.log(data)
+			return data;
+		}
+	}
+
+	function doClassification(data){
+		if(data != null){
+			var result = classify(data);
+			document.getElementById("result").innerHTML = "Classifer output: " + result;
+		}
+	}
+
+	var chart = null;
+	function makeChart(data) {
+
+		//TODO: Plot the accelerometer data 
+		//HINT: You can use Chart.js API (This task is optional)
+
+	}
+	
+	function getData() {
+		UART.eval('dumpData()', function(response) {
+			UART.close();
+			var data = extractDataFromResponse(response);
+			document.getElementById("sensordata").value = data;
+			//makeChart(data);
+			doClassification(data);
+		});
+	}
+	
+	//This helper function copies the accelerometer data to the clipboard for testing
+	function copy() {
+		var copyText = document.getElementById("sensordata");
+		copyText.select();
+		copyText.setSelectionRange(0, 99999); /* For mobile devices */
+		navigator.clipboard.writeText(copyText.value);
+		alert("Copied the text: " + copyText.value);
+	}
+  
+</script>
+  
+  <div>
+  <button style="margin: 20px;" onclick="getData()">Retrieve and process</button>
+  <input style="margin: 20px; width: 500px" type="text" value=".." id="sensordata">
+  <button onclick="copy()">Copy</button>
+  </div>
+  <div>
+    <label style="margin: 20px; width: 500px" id="result">Classifer output:...</label>
+	</div>
+ </body>
+</html>
