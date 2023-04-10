@@ -4,7 +4,7 @@ console.log("START");
 
 var i = 0;
 setInterval(function() {
-  if(i < 19){
+  if(i < 20){
     var v = Puck.accel().acc;
     Infxl.insert(i, v.x, v.y, v.z);
     i++;
@@ -43,7 +43,7 @@ function slidingWindow(stride){
 }
 
 setInterval(function() {
-  if(i < 19){
+  if(i < 20){
     read_acc();
   } else {
     var classification = classify();
